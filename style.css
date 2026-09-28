@@ -5,7 +5,7 @@ html {
 
 .container-x {
   width: 92%;
-  max-width: 1180px;
+  max-width: 1280px;
   margin-inline: auto;
 }
 
@@ -13,7 +13,7 @@ html {
   opacity: 0;
   transform: translateY(28px);
   transition: opacity .8s cubic-bezier(.2, .7, .2, 1),
-              transform .8s cubic-bezier(.2, .7, .2, 1);
+  transform .8s cubic-bezier(.2, .7, .2, 1);
 }
 [data-reveal].is-visible {
   opacity: 1;
