@@ -14,6 +14,40 @@ const videoGrid = document.getElementById('videoGrid');
 const graphicGrid = document.getElementById('graphicGrid');
 const gadgetGrid = document.getElementById('gadgetGrid');
 
+function setupGridExpansion(grid, button) {
+  if (!grid || !button) return () => {};
+  let expanded = false;
+  const moreLabel = button.textContent.trim();
+
+  function update() {
+    const cards = Array.from(grid.children);
+    const columns = Math.max(1, getComputedStyle(grid).gridTemplateColumns.split(/\s+/).filter(Boolean).length);
+    const rowLimit = columns * 2;
+
+    cards.forEach((card, index) => {
+      card.classList.toggle('hidden', !expanded && index >= rowLimit);
+    });
+    button.classList.toggle('hidden', cards.length <= rowLimit);
+    button.textContent = expanded ? 'Show less' : moreLabel;
+    button.setAttribute('aria-expanded', String(expanded));
+  }
+
+  button.addEventListener('click', () => {
+    expanded = !expanded;
+    update();
+  });
+  if ('MutationObserver' in window) {
+    new MutationObserver(update).observe(grid, { childList: true });
+  }
+  window.addEventListener('resize', update);
+  update();
+  return update;
+}
+
+const refreshVideoGrid = setupGridExpansion(videoGrid, document.getElementById('showMoreVideos'));
+const refreshGraphicGrid = setupGridExpansion(graphicGrid, document.getElementById('showMoreGraphics'));
+const refreshGadgetGrid = setupGridExpansion(gadgetGrid, document.getElementById('showMoreGadgets'));
+
 const esc = (s = '') => String(s).replace(/[&<>"']/g, (c) => (
   { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]
 ));
@@ -64,6 +98,7 @@ function renderGraphics(items) {
         <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
       </span>
     </button>`).join('');
+  refreshGraphicGrid();
   graphicGrid.querySelectorAll('[data-src]').forEach((el) => el.addEventListener('click', () => openImage(el)));
 }
 
@@ -86,6 +121,7 @@ function renderGadgets(items) {
         </a>
       </div>
     </div>`).join('');
+  refreshGadgetGrid();
   gadgetGrid.querySelectorAll('[data-src]').forEach((el) => el.addEventListener('click', () => openImage(el)));
 }
 
@@ -111,6 +147,7 @@ function renderVideos(items) {
       </span>
     </button>`;
   }).join('');
+  refreshVideoGrid();
 
   videoGrid.querySelectorAll('[data-video]').forEach((btn) => {
     btn.addEventListener('click', () => {

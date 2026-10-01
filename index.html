@@ -4,7 +4,35 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Famous Global | Creative Solutions. Digital Innovation.</title>
-<meta name="description" content="Famous Global — AI video creation, graphic design, web development, and gadgets.">
+
+<!-- ===== Primary SEO ===== -->
+<meta name="description" content="Famous Global is a creative and digital solutions brand offering AI video creation, graphic design, web development and quality gadgets for individuals, businesses and brands.">
+<meta name="keywords" content="Famous Global, AI video creation, video production, video editing, graphic design, flyer design, logo design, web development, gadgets, power bank, smart watch, air pods, earpiece, chargers, Nigeria">
+<meta name="author" content="Famous Global">
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#080808">
+<meta name="format-detection" content="telephone=no">
+<link rel="canonical" href="/">
+
+<!-- ===== Icons / PWA ===== -->
+<link rel="icon" type="image/png" href="assets/favicon.png">
+<link rel="apple-touch-icon" href="assets/favicon.png">
+<link rel="manifest" href="site.webmanifest">
+
+<!-- ===== Open Graph ===== -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Famous Global">
+<meta property="og:title" content="Famous Global | Creative Solutions. Digital Innovation.">
+<meta property="og:description" content="AI video creation, graphic design, web development and quality gadgets — ready for the real world.">
+<meta property="og:image" content="assets/favicon.png">
+<meta property="og:locale" content="en_NG">
+
+<!-- ===== Twitter ===== -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Famous Global | Creative Solutions. Digital Innovation.">
+<meta name="twitter:description" content="AI video creation, graphic design, web development and quality gadgets — ready for the real world.">
+<meta name="twitter:image" content="assets/favicon.png">
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet">
@@ -42,6 +70,60 @@
   }
 </script>
 <link rel="stylesheet" href="style.css">
+<script>
+  // Make canonical / social URLs absolute for whatever domain the site is served on.
+  (function () {
+    if (!location.origin || location.origin === 'null') return;
+    var origin = location.origin;
+    var image = origin + '/assets/favicon.png';
+
+    var canonical = document.querySelector('link[rel="canonical"]');
+    if (canonical) canonical.href = origin + '/';
+
+    var ogUrl = document.querySelector('meta[property="og:url"]');
+    if (!ogUrl) {
+      ogUrl = document.createElement('meta');
+      ogUrl.setAttribute('property', 'og:url');
+      document.head.appendChild(ogUrl);
+    }
+    ogUrl.setAttribute('content', origin + '/');
+
+    var ogImage = document.querySelector('meta[property="og:image"]');
+    if (ogImage) ogImage.setAttribute('content', image);
+    var twImage = document.querySelector('meta[name="twitter:image"]');
+    if (twImage) twImage.setAttribute('content', image);
+
+    // Structured data (Organization)
+    var data = {
+      '@context': 'https://schema.org',
+      '@type': 'Organization',
+      name: 'Famous Global',
+      url: origin + '/',
+      logo: image,
+      image: image,
+      description: 'Creative and digital solutions brand offering AI video creation, graphic design, web development and quality gadgets.',
+      email: 'famousglobal26@gmail.com',
+      telephone: '+2347055337315',
+      areaServed: 'Nigeria',
+      sameAs: [
+        'https://www.tiktok.com/@de__creator',
+        'https://www.youtube.com/@famousglobal_tv',
+        'https://www.instagram.com/famousglobal_'
+      ],
+      contactPoint: {
+        '@type': 'ContactPoint',
+        telephone: '+2347055337315',
+        contactType: 'customer service',
+        areaServed: 'NG',
+        availableLanguage: 'en'
+      }
+    };
+    var ld = document.createElement('script');
+    ld.type = 'application/ld+json';
+    ld.textContent = JSON.stringify(data);
+    document.head.appendChild(ld);
+  })();
+</script>
 </head>
 <body class="overflow-x-hidden bg-ink font-sans text-neutral-100 antialiased">
 
@@ -169,7 +251,7 @@
   </div>
 </section>
 
-<!-- ================= WORK ================= -->
+<!-- ================= VIDEO WORK ================= -->
 <section id="work" class="py-20 md:py-28">
   <div class="container-x">
     <div class="mb-10" data-reveal>
@@ -178,24 +260,43 @@
     </div>
 
     <div id="videoBlock">
-      <h3 class="mb-4 text-lg font-bold tracking-wide" data-reveal>VIDEO SAMPLES</h3>
+      <h3 class="mb-5 text-lg font-bold tracking-wide" data-reveal>VIDEO SAMPLES</h3>
       <div id="videoGrid" class="grid grid-cols-1 gap-4 md:grid-cols-2">
         <p class="col-span-full rounded-2xl border border-dashed border-line p-10 text-center text-sm text-neutral-600">Videos coming soon.</p>
       </div>
+      <button id="showMoreVideos" type="button" aria-expanded="false" class="mt-7 hidden rounded-lg border border-line px-5 py-2.5 text-sm font-bold text-neutral-300 transition hover:border-gold/50 hover:text-gold-light">Show more videos</button>
     </div>
+  </div>
+</section>
 
-    <div id="graphicBlock" class="mt-14">
-      <h3 class="mb-4 text-lg font-bold tracking-wide">GRAPHIC DESIGN SAMPLES</h3>
+<!-- ================= GRAPHIC WORK ================= -->
+<section id="graphics" class="border-t border-line bg-[#0b0b0b] py-20 md:py-28">
+  <div class="container-x">
+    <div id="graphicBlock">
+      <div class="mb-8" data-reveal>
+        <div class="mb-4 text-[11px] font-bold uppercase tracking-[.22em] text-gold-light">Selected Work</div>
+        <h2 class="text-4xl font-black leading-[1.05] tracking-[-.03em] md:text-5xl">Graphic <span class="text-gold-light">design.</span></h2>
+      </div>
       <div id="graphicGrid" class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
         <p class="col-span-full rounded-2xl border border-dashed border-line p-10 text-center text-sm text-neutral-600">Graphics coming soon.</p>
       </div>
+      <button id="showMoreGraphics" type="button" aria-expanded="false" class="mt-7 hidden rounded-lg border border-line px-5 py-2.5 text-sm font-bold text-neutral-300 transition hover:border-gold/50 hover:text-gold-light">Show more graphics</button>
     </div>
+  </div>
+</section>
 
-    <div id="gadgetBlock" class="mt-16">
-      <h3 class="mb-4 text-lg font-bold tracking-wide">GADGET SAMPLES</h3>
+<!-- ================= GADGET WORK ================= -->
+<section id="gadgets" class="border-t border-line py-20 md:py-28">
+  <div class="container-x">
+    <div id="gadgetBlock">
+      <div class="mb-8" data-reveal>
+        <div class="mb-4 text-[11px] font-bold uppercase tracking-[.22em] text-gold-light">Selected Products</div>
+        <h2 class="text-4xl font-black leading-[1.05] tracking-[-.03em] md:text-5xl">Gadgets &amp; <span class="text-gold-light">accessories.</span></h2>
+      </div>
       <div id="gadgetGrid" class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         <p class="col-span-full rounded-2xl border border-dashed border-line p-10 text-center text-sm text-neutral-600">Gadgets coming soon.</p>
       </div>
+      <button id="showMoreGadgets" type="button" aria-expanded="false" class="mt-7 hidden rounded-lg border border-line px-5 py-2.5 text-sm font-bold text-neutral-300 transition hover:border-gold/50 hover:text-gold-light">Show more gadgets</button>
     </div>
   </div>
 </section>
@@ -310,11 +411,22 @@
       btn.setAttribute('aria-expanded', String(willOpen));
     });
     menu.querySelectorAll('a').forEach(function (a) {
-      a.addEventListener('click', function () {
+      a.addEventListener('click', function (event) {
+        var href = a.getAttribute('href');
+        var target = href && href.charAt(0) === '#' ? document.getElementById(href.slice(1)) : null;
         menu.classList.add('hidden');
         open.classList.remove('hidden');
         close.classList.add('hidden');
         btn.setAttribute('aria-expanded', 'false');
+        if (!target) return;
+
+        event.preventDefault();
+        if (window.location.hash !== href) window.history.pushState(null, '', href);
+        window.requestAnimationFrame(function () {
+          var top = Math.max(0, target.getBoundingClientRect().top + window.scrollY - 112);
+          var reducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+          window.scrollTo({ top: top, behavior: reducedMotion ? 'auto' : 'smooth' });
+        });
       });
     });
   })();

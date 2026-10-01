@@ -1,0 +1,10 @@
+# Famous Global — robots.txt
+User-agent: *
+Allow: /
+
+# Keep the admin area out of search engines.
+Disallow: /admin
+Disallow: /admin.html
+
+# After you set your production domain, uncomment and update:
+# Sitemap: https://your-domain.com/sitemap.xml
