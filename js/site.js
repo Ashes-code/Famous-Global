@@ -10,24 +10,27 @@ import {
   formatNaira, whatsappOrderLink
 } from './supabase.js';
 
-const videoGrid = document.getElementById('videoGrid');
+const portraitVideoGrid = document.getElementById('portraitVideoGrid');
+const landscapeVideoGrid = document.getElementById('landscapeVideoGrid');
 const graphicGrid = document.getElementById('graphicGrid');
 const gadgetGrid = document.getElementById('gadgetGrid');
 
-function setupGridExpansion(grid, button) {
+function setupGridExpansion(grid, button, options = {}) {
   if (!grid || !button) return () => {};
   let expanded = false;
   const moreLabel = button.textContent.trim();
+  const firstLimit = options.firstLimit || 2;
 
   function update() {
     const cards = Array.from(grid.children);
     const columns = Math.max(1, getComputedStyle(grid).gridTemplateColumns.split(/\s+/).filter(Boolean).length);
     const rowLimit = columns * 2;
+    const limit = expanded ? Infinity : firstLimit;
 
     cards.forEach((card, index) => {
-      card.classList.toggle('hidden', !expanded && index >= rowLimit);
+      card.classList.toggle('hidden', index >= limit);
     });
-    button.classList.toggle('hidden', cards.length <= rowLimit);
+    button.classList.toggle('hidden', cards.length <= limit);
     button.textContent = expanded ? 'Show less' : moreLabel;
     button.setAttribute('aria-expanded', String(expanded));
   }
@@ -44,9 +47,10 @@ function setupGridExpansion(grid, button) {
   return update;
 }
 
-const refreshVideoGrid = setupGridExpansion(videoGrid, document.getElementById('showMoreVideos'));
-const refreshGraphicGrid = setupGridExpansion(graphicGrid, document.getElementById('showMoreGraphics'));
-const refreshGadgetGrid = setupGridExpansion(gadgetGrid, document.getElementById('showMoreGadgets'));
+const refreshPortraitVideoGrid = setupGridExpansion(portraitVideoGrid, document.getElementById('showMorePortraitVideos'), { firstLimit: 3 });
+const refreshLandscapeVideoGrid = setupGridExpansion(landscapeVideoGrid, document.getElementById('showMoreLandscapeVideos'), { firstLimit: 2 });
+const refreshGraphicGrid = setupGridExpansion(graphicGrid, document.getElementById('showMoreGraphics'), { firstLimit: 3 });
+const refreshGadgetGrid = setupGridExpansion(gadgetGrid, document.getElementById('showMoreGadgets'), { firstLimit: 4 });
 
 const esc = (s = '') => String(s).replace(/[&<>"']/g, (c) => (
   { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]
@@ -89,7 +93,7 @@ function renderGraphics(items) {
   if (!items.length) return;
   graphicGrid.innerHTML = items.map((item) => `
     <button type="button" data-src="${esc(item.image_url)}" aria-label="View ${esc(item.name)}"
-      class="group relative aspect-[4/5] w-full overflow-hidden rounded-2xl border border-line bg-[#111] transition duration-300 hover:border-gold focus:outline-none focus:ring-2 focus:ring-gold/50">
+      class="group relative aspect-[9/11] w-full overflow-hidden rounded-2xl border border-line bg-[#111] transition duration-300 hover:border-gold focus:outline-none focus:ring-2 focus:ring-gold/50">
       <img src="${esc(item.image_url)}" alt="${esc(item.name)}" loading="lazy" class="h-full w-full object-cover transition duration-500 group-hover:scale-[1.06]">
       <span class="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent px-4 pb-3 pt-12">
         <span class="block truncate text-sm font-bold text-white">${esc(item.name)}</span>
@@ -128,30 +132,75 @@ function renderGadgets(items) {
 // ---------- videos ----------
 function renderVideos(items) {
   if (!items.length) return;
-  videoGrid.innerHTML = items.map((item) => {
-    const cover = item.image_url || youtubeThumb(item.video_url);
-    const platform = (item.platform || detectPlatform(item.video_url) || 'video').toLowerCase();
-    const isPortrait = platform === 'tiktok' || platform === 'instagram';
-    const cardShape = isPortrait ? 'mx-auto aspect-[9/16] max-w-[360px]' : 'aspect-video';
-    return `
-    <button type="button" data-video data-url="${esc(item.video_url || '')}" data-platform="${esc(item.platform || '')}"
-      class="flash-card group relative block ${cardShape} w-full overflow-hidden rounded-2xl border border-line bg-[#111] text-left">
-      ${cover
-        ? `<img src="${esc(cover)}" alt="${esc(item.name)}" loading="lazy" class="absolute inset-0 h-full w-full object-cover transition duration-500 group-hover:scale-[1.05]">`
-        : `<span class="absolute inset-0 flex items-center justify-center text-sm text-neutral-600">${esc(item.name)}</span>`}
-      <span class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/10 to-transparent"></span>
-      <span class="absolute left-1/2 top-1/2 grid h-16 w-16 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full border border-white/20 bg-black/50 text-white backdrop-blur transition duration-300 group-hover:scale-110 group-hover:border-gold/60 group-hover:text-gold-light">
-        <svg class="ml-1 h-6 w-6" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-      </span>
-      <span class="absolute bottom-4 left-4 right-4">
-        <span class="block text-sm font-bold text-white">${esc(item.name)}</span>
-        <span class="mt-1 inline-block rounded bg-black/60 px-2 py-0.5 text-[11px] font-bold uppercase tracking-wide text-gold-light">${esc(platform)}</span>
-      </span>
-    </button>`;
-  }).join('');
-  refreshVideoGrid();
 
-  videoGrid.querySelectorAll('[data-video]').forEach((btn) => {
+  const portraitItems = items.filter((item) => {
+    const platform = (item.platform || detectPlatform(item.video_url) || 'video').toLowerCase();
+    return platform === 'tiktok' || platform === 'instagram';
+  });
+
+  const landscapeItems = items.filter((item) => {
+    const platform = (item.platform || detectPlatform(item.video_url) || 'video').toLowerCase();
+    return platform === 'youtube';
+  });
+
+  // Portrait videos (TikTok / Instagram)
+  if (portraitItems.length > 0) {
+    portraitVideoGrid.innerHTML = portraitItems.map((item) => {
+      const cover = item.image_url || youtubeThumb(item.video_url);
+      const platform = (item.platform || detectPlatform(item.video_url) || 'video').toLowerCase();
+      return `
+      <button type="button" data-video data-url="${esc(item.video_url || '')}" data-platform="${esc(item.platform || '')}"
+        class="flash-card group relative block h-[500px] max-w-[360px] w-full overflow-hidden rounded-2xl border border-line bg-[#111] text-left">
+        ${cover
+          ? `<img src="${esc(item.image_url || youtubeThumb(item.video_url))}" alt="${esc(item.name)}" loading="lazy" class="absolute inset-0 h-full w-full object-cover transition duration-500 group-hover:scale-[1.05]">`
+          : `<span class="absolute inset-0 flex items-center justify-center text-sm text-neutral-600">${esc(item.name)}</span>`}
+        <span class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/10 to-transparent"></span>
+        <span class="absolute left-1/2 top-1/2 grid h-16 w-16 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full border border-white/20 bg-black/50 text-white backdrop-blur transition duration-300 group-hover:scale-110 group-hover:border-gold/60 group-hover:text-gold-light">
+          <svg class="ml-1 h-6 w-6" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+        </span>
+        <span class="absolute bottom-4 left-4 right-4">
+          <span class="block text-sm font-bold text-white">${esc(item.name)}</span>
+          <span class="mt-1 inline-block rounded bg-black/60 px-2 py-0.5 text-[11px] font-bold uppercase tracking-wide text-gold-light">${(item.platform || detectPlatform(item.video_url) || 'video').toUpperCase()}</span>
+        </span>
+      </button>`;
+    }).join('');
+    refreshPortraitVideoGrid();
+  } else {
+    portraitVideoGrid.innerHTML = '<p class="col-span-full rounded-2xl border border-dashed border-line p-10 text-center text-sm text-neutral-600">Short-form videos coming soon.</p>';
+    const showMoreBtn = document.getElementById('showMorePortraitVideos');
+    if (showMoreBtn) showMoreBtn.classList.add('hidden');
+  }
+
+  // Landscape videos (YouTube)
+  if (landscapeItems.length > 0) {
+    landscapeVideoGrid.innerHTML = landscapeItems.map((item) => {
+      const cover = item.image_url || youtubeThumb(item.video_url);
+      return `
+      <button type="button" data-video data-url="${esc(item.video_url || '')}" data-platform="${esc(item.platform || '')}"
+        class="flash-card group relative block aspect-video w-full overflow-hidden rounded-2xl border border-line bg-[#111] text-left">
+        ${cover
+          ? `<img src="${esc(cover)}" alt="${esc(item.name)}" loading="lazy" class="absolute inset-0 h-full w-full object-cover transition duration-500 group-hover:scale-[1.05]">`
+          : `<span class="absolute inset-0 flex items-center justify-center text-sm text-neutral-600">${esc(item.name)}</span>`}
+        <span class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/10 to-transparent"></span>
+        <span class="absolute left-1/2 top-1/2 grid h-16 w-16 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full border border-white/20 bg-black/50 text-white backdrop-blur transition duration-300 group-hover:scale-110 group-hover:border-gold/60 group-hover:text-gold-light">
+          <svg class="ml-1 h-6 w-6" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+        </span>
+        <span class="absolute bottom-4 left-4 right-4">
+          <span class="block text-sm font-bold text-white">${esc(item.name)}</span>
+          <span class="mt-1 inline-block rounded bg-black/60 px-2 py-0.5 text-[11px] font-bold uppercase tracking-wide text-gold-light">YOUTUBE</span>
+        </span>
+      </button>`;
+    }).join('');
+    refreshLandscapeVideoGrid();
+  } else {
+    landscapeVideoGrid.innerHTML = '<p class="col-span-full rounded-2xl border border-dashed border-line p-10 text-center text-sm text-neutral-600">Long-form videos coming soon.</p>';
+    const showMoreBtn = document.getElementById('showMoreLandscapeVideos');
+    if (showMoreBtn) showMoreBtn.classList.add('hidden');
+  }
+
+  // Event listeners for all video buttons
+  const allVideoButtons = document.querySelectorAll('[data-video]');
+  allVideoButtons.forEach((btn) => {
     btn.addEventListener('click', () => {
       const url = btn.dataset.url;
       const embed = embedFor({ video_url: url, platform: btn.dataset.platform });
