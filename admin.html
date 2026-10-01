@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin | Famous Global</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          gold: { DEFAULT: '#d9ad32', light: '#f4d36b' },
+          ink: '#080808', panel: '#101010', panel2: '#151515', line: '#292929',
+        },
+        fontFamily: { sans: ['Nunito', 'Arial', 'Helvetica', 'sans-serif'] },
+      }
+    }
+  }
+</script>
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.6/Sortable.min.js"></script>
+<link rel="stylesheet" href="style.css">
+</head>
+<body class="min-h-screen bg-ink font-sans text-neutral-100 antialiased">
+
+<!-- ============ HEADER ============ -->
+<header class="sticky top-0 z-40 border-b border-line bg-ink/80 backdrop-blur-xl">
+  <div class="container-x flex h-16 items-center justify-between gap-4">
+    <span class="text-base font-black tracking-[.08em]">FAMOUS <span class="text-gold-light">GLOBAL</span> <span class="ml-1 text-xs font-bold text-neutral-500">/ Admin</span></span>
+    <div class="flex items-center gap-3">
+      <a id="viewSiteBtn" href="index.html" target="_blank" rel="noopener" class="hidden rounded-lg border border-line px-3 py-2 text-xs font-bold text-neutral-300 transition hover:border-gold/40 hover:text-gold-light">View site</a>
+      <button id="logoutBtn" type="button" class="hidden rounded-lg border border-line px-3 py-2 text-xs font-bold text-neutral-300 transition hover:border-gold/40 hover:text-gold-light">Sign out</button>
+    </div>
+  </div>
+</header>
+
+<!-- ============ CONFIG WARNING ============ -->
+<div id="configWarning" class="container-x mt-6 hidden">
+  <div class="rounded-xl border border-gold/40 bg-gold/10 px-4 py-3 text-sm text-gold-light">
+    Supabase isn't configured yet. Open <code class="font-bold">js/supabase.js</code> and paste your Project URL and anon key.
+  </div>
+</div>
+
+<!-- ============ LOGIN ============ -->
+<section id="loginView" class="container-x flex min-h-[70vh] items-center justify-center py-12">
+  <form id="loginForm" class="w-full max-w-sm rounded-2xl border border-line bg-panel p-7">
+    <div class="mb-1 text-[11px] font-bold uppercase tracking-[.22em] text-gold-light">Admin access</div>
+    <h1 class="mb-6 text-2xl font-black">Sign in</h1>
+
+    <label class="mb-1 block text-xs font-bold uppercase tracking-wider text-neutral-500" for="email">Email</label>
+    <input id="email" type="email" required autocomplete="username"
+      class="mb-4 w-full rounded-lg border border-line bg-[#0c0c0c] px-3 py-2.5 text-sm outline-none transition focus:border-gold/60">
+
+    <label class="mb-1 block text-xs font-bold uppercase tracking-wider text-neutral-500" for="password">Password</label>
+    <input id="password" type="password" required autocomplete="current-password"
+      class="mb-5 w-full rounded-lg border border-line bg-[#0c0c0c] px-3 py-2.5 text-sm outline-none transition focus:border-gold/60">
+
+    <button type="submit" class="w-full rounded-lg border border-gold bg-gold px-4 py-3 text-sm font-bold text-ink transition hover:bg-gold-light">Sign in</button>
+    <p id="loginError" class="mt-4 hidden text-sm text-red-400"></p>
+  </form>
+</section>
+
+<!-- ============ DASHBOARD ============ -->
+<section id="dashboardView" class="container-x hidden py-8">
+  <!-- Tabs -->
+  <div class="mb-6 inline-flex rounded-xl border border-line bg-panel p-1" role="tablist">
+    <button data-tab="graphic" class="tab-btn rounded-lg px-4 py-2 text-sm font-bold transition">Graphics</button>
+    <button data-tab="gadget" class="tab-btn rounded-lg px-4 py-2 text-sm font-bold transition">Gadgets</button>
+    <button data-tab="video" class="tab-btn rounded-lg px-4 py-2 text-sm font-bold transition">Videos</button>
+  </div>
+
+  <div class="grid gap-6 lg:grid-cols-[380px_1fr]">
+    <!-- ---------- FORM ---------- -->
+    <div class="lg:sticky lg:top-24 lg:self-start">
+      <form id="itemForm" class="rounded-2xl border border-line bg-panel p-6">
+        <h2 id="formTitle" class="mb-5 text-lg font-black">Add graphic</h2>
+        <input type="hidden" id="editId">
+
+        <label class="mb-1 block text-xs font-bold uppercase tracking-wider text-neutral-500" for="name">Name</label>
+        <input id="name" required class="mb-4 w-full rounded-lg border border-line bg-[#0c0c0c] px-3 py-2.5 text-sm outline-none transition focus:border-gold/60">
+
+        <!-- Gadget-only -->
+        <div data-field="desc" class="hidden">
+          <label class="mb-1 block text-xs font-bold uppercase tracking-wider text-neutral-500" for="description">Description</label>
+          <textarea id="description" rows="3" class="mb-4 w-full rounded-lg border border-line bg-[#0c0c0c] px-3 py-2.5 text-sm outline-none transition focus:border-gold/60"></textarea>
+        </div>
+        <div data-field="price" class="hidden">
+          <label class="mb-1 block text-xs font-bold uppercase tracking-wider text-neutral-500" for="price">Price (₦)</label>
+          <input id="price" type="text" inputmode="numeric" autocomplete="off" placeholder="0" class="mb-4 w-full rounded-lg border border-line bg-[#0c0c0c] px-3 py-2.5 text-sm outline-none transition focus:border-gold/60">
+        </div>
+        <div data-field="category" class="hidden">
+          <label class="mb-1 block text-xs font-bold uppercase tracking-wider text-neutral-500" for="category">Category</label>
+          <input id="category" list="categoryList" placeholder="e.g. Smart watch" class="mb-4 w-full rounded-lg border border-line bg-[#0c0c0c] px-3 py-2.5 text-sm outline-none transition focus:border-gold/60">
+          <datalist id="categoryList"></datalist>
+        </div>
+
+        <!-- Video-only -->
+        <div data-field="video" class="hidden">
+          <label class="mb-1 block text-xs font-bold uppercase tracking-wider text-neutral-500" for="videoUrl">Video link</label>
+          <input id="videoUrl" type="url" placeholder="Paste YouTube / TikTok / Instagram link" class="mb-1 w-full rounded-lg border border-line bg-[#0c0c0c] px-3 py-2.5 text-sm outline-none transition focus:border-gold/60">
+          <p id="platformHint" class="mb-4 text-xs text-neutral-600">Platform detected automatically.</p>
+        </div>
+
+        <!-- Image / cover -->
+        <div data-field="image">
+          <label class="mb-1 block text-xs font-bold uppercase tracking-wider text-neutral-500" for="image">Image</label>
+          <input id="image" type="file" accept="image/*" class="mb-3 block w-full text-xs text-neutral-400 file:mr-3 file:rounded-lg file:border-0 file:bg-gold/15 file:px-3 file:py-2 file:text-xs file:font-bold file:text-gold-light">
+          <div id="previewWrap" class="mb-4 hidden">
+            <img id="preview" alt="Preview" class="max-h-44 w-full rounded-lg border border-line object-contain">
+          </div>
+          <p id="imageHint" class="mb-4 text-xs text-neutral-600"></p>
+        </div>
+
+        <div class="flex items-center gap-3">
+          <button type="submit" id="submitBtn" class="flex-1 rounded-lg border border-gold bg-gold px-4 py-3 text-sm font-bold text-ink transition hover:bg-gold-light">Add graphic</button>
+          <button type="button" id="cancelEdit" class="hidden rounded-lg border border-line px-4 py-3 text-sm font-bold text-neutral-300 transition hover:border-gold/40">Cancel</button>
+        </div>
+        <p id="formError" class="mt-4 hidden text-sm text-red-400"></p>
+      </form>
+    </div>
+
+    <!-- ---------- LIST ---------- -->
+    <div>
+      <div class="mb-3 flex items-center justify-between">
+        <h2 class="text-lg font-black" id="listTitle">Graphics</h2>
+        <span class="text-xs text-neutral-500">Drag cards to reorder</span>
+      </div>
+      <div id="adminList" class="grid grid-cols-2 gap-3 sm:grid-cols-3"></div>
+      <p id="emptyState" class="hidden rounded-xl border border-dashed border-line p-8 text-center text-sm text-neutral-600">Nothing here yet.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ TOASTS ============ -->
+<div id="toasts" class="pointer-events-none fixed bottom-5 right-5 z-50 flex flex-col gap-2"></div>
+
+<script type="module" src="js/admin.js"></script>
+</body>
+</html>
