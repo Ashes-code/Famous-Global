@@ -49,3 +49,11 @@ html {
   [data-reveal] { opacity: 1; transform: none; transition: none; }
   .flash-card:hover::after { animation: none; }
 }
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}

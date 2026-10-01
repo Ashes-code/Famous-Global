@@ -69,12 +69,12 @@ function embedFor(item) {
   }
   if (platform === 'tiktok') {
     const m = url.match(/video\/(\d+)/);
-    return m ? { src: `https://www.tiktok.com/embed/v2/${m[1]}`, ratio: '16:9' } : null;
+    return m ? { src: `https://www.tiktok.com/embed/v2/${m[1]}`, ratio: '9:16' } : null;
   }
   if (platform === 'instagram') {
     const m = url.match(/(?:p|reel|tv)\/([A-Za-z0-9_-]+)/);
     const kind = url.includes('/reel/') ? 'reel' : 'p';
-    return m ? { src: `https://www.instagram.com/${kind}/${m[1]}/embed`, ratio: '16:9' } : null;
+    return m ? { src: `https://www.instagram.com/${kind}/${m[1]}/embed`, ratio: '9:16' } : null;
   }
   return null;
 }
@@ -130,13 +130,15 @@ function renderVideos(items) {
   if (!items.length) return;
   videoGrid.innerHTML = items.map((item) => {
     const cover = item.image_url || youtubeThumb(item.video_url);
-    const platform = (item.platform || detectPlatform(item.video_url) || 'video').toUpperCase();
+    const platform = (item.platform || detectPlatform(item.video_url) || 'video').toLowerCase();
+    const isPortrait = platform === 'tiktok' || platform === 'instagram';
+    const cardShape = isPortrait ? 'mx-auto aspect-[9/16] max-w-[360px]' : 'aspect-video';
     return `
     <button type="button" data-video data-url="${esc(item.video_url || '')}" data-platform="${esc(item.platform || '')}"
-      class="flash-card group relative block min-h-[330px] w-full overflow-hidden rounded-2xl border border-line bg-[#111] text-left">
+      class="flash-card group relative block ${cardShape} w-full overflow-hidden rounded-2xl border border-line bg-[#111] text-left">
       ${cover
         ? `<img src="${esc(cover)}" alt="${esc(item.name)}" loading="lazy" class="absolute inset-0 h-full w-full object-cover transition duration-500 group-hover:scale-[1.05]">`
-        : `<span class="absolute inset-0 flex min-h-[330px] items-center justify-center text-sm text-neutral-600">${esc(item.name)}</span>`}
+        : `<span class="absolute inset-0 flex items-center justify-center text-sm text-neutral-600">${esc(item.name)}</span>`}
       <span class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/10 to-transparent"></span>
       <span class="absolute left-1/2 top-1/2 grid h-16 w-16 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full border border-white/20 bg-black/50 text-white backdrop-blur transition duration-300 group-hover:scale-110 group-hover:border-gold/60 group-hover:text-gold-light">
         <svg class="ml-1 h-6 w-6" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
