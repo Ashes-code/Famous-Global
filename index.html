@@ -97,18 +97,13 @@
       </div>
     </div>
 
-    <!-- Animated hero card -->
+    <!-- Hero video -->
     <div data-reveal style="transition-delay:.15s" class="relative">
       <div class="pointer-events-none absolute -inset-6 animate-glow rounded-[32px] bg-gold/20 blur-2xl"></div>
-      <div class="relative h-[420px] animate-float overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-[#1a1a1a] to-[#0d0d0d] shadow-glow sm:h-[500px]">
-        <div class="pointer-events-none absolute inset-[12%] rotate-[-5deg] border border-gold/25"></div>
-        <div class="pointer-events-none absolute inset-0 -translate-x-full animate-shine bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
-        <div class="absolute inset-0 flex items-center justify-center p-8 text-center">
-          <div class="animate-floatY">
-            <div class="mb-5 text-[11px] font-bold uppercase tracking-[.22em] text-gold-light">Famous Global</div>
-            <h2 class="text-4xl font-black leading-[1.05] sm:text-5xl">Creative.<br><span class="text-gold-light">Modern.</span><br>Effective.</h2>
-          </div>
-        </div>
+      <div class="relative h-[420px] animate-float overflow-hidden rounded-2xl border border-white/10 bg-black shadow-glow sm:h-[500px]">
+        <video class="h-full w-full object-cover" src="assets/herovideo.webm" autoplay muted loop playsinline preload="metadata"
+          aria-label="Famous Global showcase reel"></video>
+        <div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent"></div>
       </div>
     </div>
   </div>
