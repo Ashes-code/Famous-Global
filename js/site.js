@@ -14,6 +14,7 @@ const portraitVideoGrid = document.getElementById('portraitVideoGrid');
 const landscapeVideoGrid = document.getElementById('landscapeVideoGrid');
 const graphicGrid = document.getElementById('graphicGrid');
 const gadgetGrid = document.getElementById('gadgetGrid');
+const achievementGrid = document.getElementById('achievementGrid');
 
 function setupGridExpansion(grid, button, options = {}) {
   if (!grid || !button) return () => {};
@@ -51,6 +52,7 @@ const refreshPortraitVideoGrid = setupGridExpansion(portraitVideoGrid, document.
 const refreshLandscapeVideoGrid = setupGridExpansion(landscapeVideoGrid, document.getElementById('showMoreLandscapeVideos'), { firstLimit: 2 });
 const refreshGraphicGrid = setupGridExpansion(graphicGrid, document.getElementById('showMoreGraphics'), { firstLimit: 3 });
 const refreshGadgetGrid = setupGridExpansion(gadgetGrid, document.getElementById('showMoreGadgets'), { firstLimit: 4 });
+const refreshAchievementGrid = setupGridExpansion(achievementGrid, document.getElementById('showMoreAchievements'), { firstLimit: 3 });
 
 const esc = (s = '') => String(s).replace(/[&<>"']/g, (c) => (
   { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]
@@ -127,6 +129,24 @@ function renderGadgets(items) {
     </div>`).join('');
   refreshGadgetGrid();
   gadgetGrid.querySelectorAll('[data-src]').forEach((el) => el.addEventListener('click', () => openImage(el)));
+}
+
+// ---------- achievements ----------
+function renderAchievements(items) {
+  if (!items.length) return;
+  achievementGrid.innerHTML = items.map((item) => `
+    <button type="button" data-src="${esc(item.image_url)}" aria-label="View ${esc(item.name)}"
+      class="group relative aspect-[4/3] w-full overflow-hidden rounded-2xl border border-line bg-[#111] transition duration-300 hover:border-gold focus:outline-none focus:ring-2 focus:ring-gold/50">
+      <img src="${esc(item.image_url)}" alt="${esc(item.name)}" loading="lazy" class="h-full w-full object-cover transition duration-500 group-hover:scale-[1.06]">
+      <span class="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent px-4 pb-3 pt-12">
+        <span class="block truncate text-sm font-bold text-white">${esc(item.name)}</span>
+      </span>
+      <span class="pointer-events-none absolute right-3 top-3 grid h-9 w-9 place-items-center rounded-lg border border-white/10 bg-black/60 text-white opacity-0 transition group-hover:opacity-100">
+        <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+      </span>
+    </button>`).join('');
+  refreshAchievementGrid();
+  achievementGrid.querySelectorAll('[data-src]').forEach((el) => el.addEventListener('click', () => openImage(el)));
 }
 
 // ---------- videos ----------
@@ -227,6 +247,7 @@ async function load() {
     renderVideos(all.filter((i) => i.type === 'video'));
     renderGraphics(all.filter((i) => i.type === 'graphic' && i.image_url));
     renderGadgets(all.filter((i) => i.type === 'gadget' && i.image_url));
+    renderAchievements(all.filter((i) => i.type === 'achievement' && i.image_url));
   } catch (err) {
     console.warn('Famous Global: showing static fallback —', err.message);
   }

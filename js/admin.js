@@ -38,8 +38,8 @@ const emptyState = $('emptyState');
 const toasts = $('toasts');
 
 // ---------- state ----------
-const LABELS = { graphic: 'Graphics', gadget: 'Gadgets', video: 'Videos' };
-const SINGULAR = { graphic: 'graphic', gadget: 'gadget', video: 'video' };
+const LABELS = { graphic: 'Graphics', gadget: 'Gadgets', video: 'Videos', achievement: 'Achievements' };
+const SINGULAR = { graphic: 'graphic', gadget: 'gadget', video: 'video', achievement: 'achievement' };
 const DEFAULT_CATEGORIES = ['Power bank', 'Smart watch', 'Air pods', 'Headphones', 'Earpiece & chargers'];
 
 let currentTab = 'graphic';
@@ -91,6 +91,9 @@ function friendly(err) {
   }
   if (m.includes('Bucket not found') || m.includes('NoSuchBucket')) {
     return 'Storage bucket missing — run supabase/schema.sql in the Supabase SQL Editor, then reload.';
+  }
+  if (m.includes('items_type_check') || m.includes('violates check constraint')) {
+    return 'Achievements need a database update — run the migration in supabase/schema.sql in the Supabase SQL Editor, then reload.';
   }
   return m || 'Something went wrong.';
 }
@@ -201,6 +204,8 @@ function updateFormFor() {
 
   if (isVideo) {
     imageHint.textContent = 'Cover image — optional for YouTube (auto), recommended for TikTok / Instagram.';
+  } else if (currentTab === 'achievement') {
+    imageHint.textContent = 'Upload the achievement image — JPG or PNG, up to 8MB.';
   } else {
     imageHint.textContent = 'JPG or PNG, up to 8MB.';
   }
@@ -379,7 +384,7 @@ itemForm.addEventListener('submit', async (e) => {
 
     const file = imageEl.files[0];
     if (file) {
-      const folder = type === 'video' ? 'covers' : (type === 'graphic' ? 'graphics' : 'gadgets');
+      const folder = type === 'video' ? 'covers' : (type === 'graphic' ? 'graphics' : (type === 'achievement' ? 'achievements' : 'gadgets'));
       const up = await uploadImage(file, folder);
       if (!up) { setFormBusy(false); return; }
       if (editing && editing.storage_path && editing.storage_path !== up.path) {
@@ -401,7 +406,7 @@ itemForm.addEventListener('submit', async (e) => {
       platform: type === 'video' ? detectPlatform(videoEl.value.trim()) : null
     };
 
-    if ((type === 'graphic' || type === 'gadget') && !payload.image_url) {
+    if ((type === 'graphic' || type === 'gadget' || type === 'achievement') && !payload.image_url) {
       setFormBusy(false); return showError('Please choose an image.');
     }
     if (type === 'video' && !payload.video_url) {

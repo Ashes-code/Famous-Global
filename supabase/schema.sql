@@ -15,7 +15,7 @@ $$;
 -- 2) ITEMS TABLE ---------------------------------------------------------
 create table if not exists public.items (
   id           uuid primary key default gen_random_uuid(),
-  type         text not null check (type in ('graphic','gadget','video')),
+  type         text not null check (type in ('graphic','gadget','video','achievement')),
   name         text not null,
   description  text,
   price        numeric,
@@ -29,6 +29,13 @@ create table if not exists public.items (
 );
 
 create index if not exists items_type_sort_idx on public.items (type, sort_order);
+
+-- 2b) ACHIEVEMENTS MIGRATION ---------------------------------------------
+-- Existing databases were created before the 'achievement' type existed.
+-- This safely widens the type check so achievements can be saved.
+alter table public.items drop constraint if exists items_type_check;
+alter table public.items add constraint items_type_check
+  check (type in ('graphic','gadget','video','achievement'));
 
 -- 3) ROW LEVEL SECURITY --------------------------------------------------
 alter table public.items enable row level security;

@@ -133,12 +133,12 @@
     <div class="flex items-center justify-between gap-4 rounded-full border border-white/10 bg-white/5 px-4 py-5 shadow-lg shadow-black/40 backdrop-blur-xl md:px-6">
       <a href="#home" class="text-base font-black tracking-[.08em] md:text-lg">FAMOUS <span class="text-gold-light">GLOBAL</span></a>
 
-      <nav class="hidden items-center gap-7 text-sm text-neutral-300 md:flex">
-        <a class="transition hover:text-gold-light" href="#about">About</a>
-        <a class="transition hover:text-gold-light" href="#services">Services</a>
-        <a class="transition hover:text-gold-light" href="#work">Portfolio</a>
-        <a class="transition hover:text-gold-light" href="#process">Process</a>
-        <a class="transition hover:text-gold-light" href="#contact">Contact</a>
+      <nav class="hidden items-center gap-7 text-sm font-bold text-gold-light md:flex">
+        <a class="transition hover:text-white" href="#about">About</a>
+        <a class="transition hover:text-white" href="#services">Services</a>
+        <a class="transition hover:text-white" href="#work">Portfolio</a>
+        <a class="transition hover:text-white" href="#achievements">Achievements</a>
+        <a class="transition hover:text-white" href="#contact">Contact</a>
       </nav>
 
       <button id="menuBtn" type="button" aria-label="Toggle menu" aria-expanded="false" aria-controls="mobileMenu"
@@ -150,12 +150,12 @@
 
     <!-- Mobile dropdown -->
     <div id="mobileMenu" class="hidden origin-top rounded-2xl border border-white/10 bg-ink/85 p-2 backdrop-blur-xl md:hidden">
-      <nav class="flex flex-col text-sm text-neutral-200">
-        <a class="rounded-xl px-4 py-3 transition hover:bg-white/5 hover:text-gold-light" href="#about">About</a>
-        <a class="rounded-xl px-4 py-3 transition hover:bg-white/5 hover:text-gold-light" href="#services">Services</a>
-        <a class="rounded-xl px-4 py-3 transition hover:bg-white/5 hover:text-gold-light" href="#work">Portfolio</a>
-        <a class="rounded-xl px-4 py-3 transition hover:bg-white/5 hover:text-gold-light" href="#process">Process</a>
-        <a class="rounded-xl px-4 py-3 transition hover:bg-white/5 hover:text-gold-light" href="#contact">Contact</a>
+      <nav class="flex flex-col text-sm font-bold text-gold-light">
+        <a class="rounded-xl px-4 py-3 transition hover:bg-white/5 hover:text-white" href="#about">About</a>
+        <a class="rounded-xl px-4 py-3 transition hover:bg-white/5 hover:text-white" href="#services">Services</a>
+        <a class="rounded-xl px-4 py-3 transition hover:bg-white/5 hover:text-white" href="#work">Portfolio</a>
+        <a class="rounded-xl px-4 py-3 transition hover:bg-white/5 hover:text-white" href="#achievements">Achievements</a>
+        <a class="rounded-xl px-4 py-3 transition hover:bg-white/5 hover:text-white" href="#contact">Contact</a>
       </nav>
     </div>
   </div>
@@ -268,7 +268,7 @@
         <div id="portraitVideoGrid" class="grid grid-cols-1 gap-4 md:grid-cols-2 scrollbar-hide">
           <p class="col-span-full rounded-2xl border border-dashed border-line p-10 text-center text-sm text-neutral-200">Short-form videos coming soon.</p>
         </div>
-        <button id="showMorePortraitVideos" type="button" aria-expanded="false" class="mt-7 hidden rounded-lg border border-line px-5 py-2.5 text-sm font-bold text-neutral-300 transition hover:border-gold/50 hover:text-gold-light">Show more short-form</button>
+        <button id="showMorePortraitVideos" type="button" aria-expanded="false" class="mt-7 hidden rounded-lg border border-gold bg-gold/15 px-5 py-2.5 text-sm font-bold text-gold-light shadow-lg shadow-gold/10 transition hover:border-gold hover:bg-gold hover:text-ink">Show more short-form</button>
       </div>
 
       <!-- Landscape Videos (YouTube) -->
@@ -277,7 +277,7 @@
         <div id="landscapeVideoGrid" class="grid grid-cols-1 gap-4 md:grid-cols-2 scrollbar-hide">
           <p class="col-span-full rounded-2xl border border-dashed border-line p-10 text-center text-sm text-neutral-200">Long-form videos coming soon.</p>
         </div>
-        <button id="showMoreLandscapeVideos" type="button" aria-expanded="false" class="mt-7 hidden rounded-lg border border-line px-5 py-2.5 text-sm font-bold text-neutral-300 transition hover:border-gold/50 hover:text-gold-light">Show more long-form</button>
+        <button id="showMoreLandscapeVideos" type="button" aria-expanded="false" class="mt-7 hidden rounded-lg border border-gold bg-gold/15 px-5 py-2.5 text-sm font-bold text-gold-light shadow-lg shadow-gold/10 transition hover:border-gold hover:bg-gold hover:text-ink">Show more long-form</button>
       </div>
     </div>
   </div>
@@ -294,7 +294,7 @@
       <div id="graphicGrid" class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
         <p class="col-span-full rounded-2xl border border-dashed border-line p-10 text-center text-sm text-neutral-200">Graphics coming soon.</p>
       </div>
-      <button id="showMoreGraphics" type="button" aria-expanded="false" class="mt-7 hidden rounded-lg border border-line px-5 py-2.5 text-sm font-bold text-neutral-300 transition hover:border-gold/50 hover:text-gold-light">Show more graphics</button>
+      <button id="showMoreGraphics" type="button" aria-expanded="false" class="mt-7 hidden rounded-lg border border-gold bg-gold/15 px-5 py-2.5 text-sm font-bold text-gold-light shadow-lg shadow-gold/10 transition hover:border-gold hover:bg-gold hover:text-ink">Show more graphics</button>
     </div>
   </div>
 </section>
@@ -310,36 +310,24 @@
       <div id="gadgetGrid" class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         <p class="col-span-full rounded-2xl border border-dashed border-line p-10 text-center text-sm text-neutral-200">Gadgets coming soon.</p>
       </div>
-      <button id="showMoreGadgets" type="button" aria-expanded="false" class="mt-7 hidden rounded-lg border border-line px-5 py-2.5 text-sm font-bold text-neutral-300 transition hover:border-gold/50 hover:text-gold-light">Show more gadgets</button>
+      <button id="showMoreGadgets" type="button" aria-expanded="false" class="mt-7 hidden rounded-lg border border-gold bg-gold/15 px-5 py-2.5 text-sm font-bold text-gold-light shadow-lg shadow-gold/10 transition hover:border-gold hover:bg-gold hover:text-ink">Show more gadgets</button>
     </div>
   </div>
 </section>
 
-<!-- ================= PROCESS ================= -->
-<section id="process" class="py-20 md:py-28">
+<!-- ================= ACHIEVEMENTS ================= -->
+<section id="achievements" class="border-t border-line bg-[#0b0b0b] py-20 md:py-28">
   <div class="container-x">
     <div class="mb-10" data-reveal>
-      <div class="mb-4 text-[11px] font-bold uppercase tracking-[.22em] text-gold-light">04 &middot; Process</div>
-      <h2 class="text-4xl font-black leading-[1.05] tracking-[-.03em] md:text-5xl">Simple steps. <span class="text-gold-light">Great results.</span></h2>
+      <div class="mb-4 text-[11px] font-bold uppercase tracking-[.22em] text-gold-light">04 &middot; Achievements</div>
+      <h2 class="text-4xl font-black leading-[1.05] tracking-[-.03em] md:text-5xl">Milestones &amp; <span class="text-gold-light">recognition.</span></h2>
+      <p class="mt-5 max-w-2xl text-neutral-400">A look at the awards, certificates and milestones that reflect the work we've delivered and the brands we've helped grow.</p>
     </div>
 
-    <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5">
-      <div class="flash-card rounded-xl border border-line border-t-2 border-t-gold bg-panel p-5 pt-6 transition duration-300 hover:-translate-y-1" data-reveal>
-        <b class="text-xs font-bold text-gold-light">01</b><h3 class="my-2 font-bold">Discover</h3><p class="text-[13px] text-neutral-300">Understand your idea, brand and objective.</p>
-      </div>
-      <div class="flash-card rounded-xl border border-line border-t-2 border-t-gold bg-panel p-5 pt-6 transition duration-300 hover:-translate-y-1" data-reveal style="transition-delay:.07s">
-        <b class="text-xs font-bold text-gold-light">02</b><h3 class="my-2 font-bold">Plan</h3><p class="text-[13px] text-neutral-300">Develop the creative direction and approach.</p>
-      </div>
-      <div class="flash-card rounded-xl border border-line border-t-2 border-t-gold bg-panel p-5 pt-6 transition duration-300 hover:-translate-y-1" data-reveal style="transition-delay:.14s">
-        <b class="text-xs font-bold text-gold-light">03</b><h3 class="my-2 font-bold">Create</h3><p class="text-[13px] text-neutral-300">Produce the video, design or digital solution.</p>
-      </div>
-      <div class="flash-card rounded-xl border border-line border-t-2 border-t-gold bg-panel p-5 pt-6 transition duration-300 hover:-translate-y-1" data-reveal style="transition-delay:.21s">
-        <b class="text-xs font-bold text-gold-light">04</b><h3 class="my-2 font-bold">Refine</h3><p class="text-[13px] text-neutral-300">Make the necessary adjustments and polish.</p>
-      </div>
-      <div class="flash-card rounded-xl border border-line border-t-2 border-t-gold bg-panel p-5 pt-6 transition duration-300 hover:-translate-y-1" data-reveal style="transition-delay:.28s">
-        <b class="text-xs font-bold text-gold-light">05</b><h3 class="my-2 font-bold">Deliver</h3><p class="text-[13px] text-neutral-300">Deliver the finished work ready for use.</p>
-      </div>
+    <div id="achievementGrid" class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <p class="col-span-full rounded-2xl border border-dashed border-line p-10 text-center text-sm text-neutral-200">Achievements coming soon.</p>
     </div>
+    <button id="showMoreAchievements" type="button" aria-expanded="false" class="mt-7 hidden rounded-lg border border-gold bg-gold/15 px-5 py-2.5 text-sm font-bold text-gold-light shadow-lg shadow-gold/10 transition hover:border-gold hover:bg-gold hover:text-ink">Show more achievements</button>
   </div>
 </section>
 
